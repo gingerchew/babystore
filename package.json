@@ -3,5 +3,21 @@
   "version": "0.01",
   "description": "Smallest async LocalStorage wrapper",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "size": "size-limit",
+    "build:index":"esbuild src/index.js --outfile=index.js --format=esm --target=es2020",
+    "build:min": "esbuild src/index.js --outfile=index.min.js --minify --sourcemap --format=esm --target=es2020",
+    "build":"yarn build:index && yarn build:min"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^7.0.5",
+    "esbuild": "^0.14.9",
+    "size-limit": "^7.0.5"
+  },
+  "size-limit": [
+    {
+      "path": "index.js"
+    }
+  ]
 }
