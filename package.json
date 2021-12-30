@@ -1,0 +1,7 @@
+{
+  "name": "micro-store",
+  "version": "0.01",
+  "description": "Smallest async LocalStorage wrapper",
+  "main": "index.js",
+  "license": "MIT"
+}
