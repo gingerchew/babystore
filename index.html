@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Store Test</title>
+    <link rel="shortcut icon" href="https://fav.farm/💄" type="image/x-icon">
+</head>
+<body>
+    <script type="module">
+        import Store from './dist/index.js';
+        
+        let s = Store('$prefix:');
+        console.log(s);
+        const result = s.add('John', {
+            name: 'John Johnerson',
+            firstName: 'John',
+            lastName: 'Johnerson'
+        });
+        
+        let r = s.find('Jane');
+        
+        console.log(r);
+
+        s.add('Jane', {
+            name: 'Jane Jillerson',
+            firstName: 'Jane',
+            lastName: 'Jillerson',
+            ppi: {
+                ssn: 222222222,
+                phone: 5555555555,
+                email: 'email@example.com',
+                details: {
+                    a: {}
+                }
+            }
+        });
+
+        r = s.find('Jane');
+
+        console.log(r);
+
+        s.add('Jane', {
+            ppi: {
+                email: 'email2@example.com',
+                details: {
+                    b: {}
+                }
+            }
+        });
+
+        console.log(s.all());
+
+        console.log(s.find('Jane'));
+    </script>
+</body>
+</html>

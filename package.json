@@ -2,22 +2,28 @@
   "name": "micro-store",
   "version": "0.01",
   "description": "Smallest async LocalStorage wrapper",
-  "main": "index.js",
+  "main": "index.min.js",
   "license": "MIT",
   "scripts": {
     "size": "size-limit",
-    "build:index":"esbuild src/index.js --outfile=index.js --format=esm --target=es2020",
-    "build:min": "esbuild src/index.js --outfile=index.min.js --minify --sourcemap --format=esm --target=es2020",
-    "build":"yarn build:index && yarn build:min"
+    "build:index": "node ./scripts/build.js",
+    "build": "yarn build:index",
+    "serve":"serve"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.5",
+    "@size-limit/time": "^7.0.5",
     "esbuild": "^0.14.9",
     "size-limit": "^7.0.5"
   },
   "size-limit": [
     {
-      "path": "index.js"
+      "path":"dist/index.min.js",
+      "limit":"300 B"
+    },
+    {
+      "path":"dist/index.min.js",
+      "limit":"125 ms"
     }
   ]
 }
