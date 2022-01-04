@@ -1,6 +1,6 @@
 {
-  "name": "micro-store",
-  "version": "0.01",
+  "name": "@gingerchew/babystore",
+  "version": "0.0.1",
   "description": "Smallest async LocalStorage wrapper",
   "main": "index.min.js",
   "license": "MIT",
@@ -24,9 +24,9 @@
       "limit":"150 B"
     },
     {
-      "name":"micro-store",
+      "name":"babystore",
       "path":"src/index.js",
-      "limit":"300 B"
+      "limit":"330 B"
     }
   ]
 }
