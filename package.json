@@ -18,12 +18,15 @@
   },
   "size-limit": [
     {
-      "path":"dist/index.min.js",
-      "limit":"300 B"
+      "name":"deepAssign",
+      "path":"src/deepAssign.js",
+      "import":"{ deepAssign }",
+      "limit":"150 B"
     },
     {
-      "path":"dist/index.min.js",
-      "limit":"125 ms"
+      "name":"micro-store",
+      "path":"src/index.js",
+      "limit":"300 B"
     }
   ]
 }

@@ -7,6 +7,7 @@ const config = {
     target: ['es2020'],
     format: 'esm',
     logLevel: 'info',
+    bundle: true,
 };
 
 const minConfig = Object.assign({}, config, {

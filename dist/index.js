@@ -1,19 +1,28 @@
-let n, r, i, u, l = "length", o = 0, lS = localStorage, dA = (t, ...e) => {
-  i = e[l];
-  if (0 < i)
-    for (; o < i; )
-      for (r in n = e[o++])
-        t[r] = toString.call(n[r])[8] == "O" ? dA(t[r] || {}, n[r]) : n[r];
-  return t;
-}, p = JSON.parse, $$ = {
-  find: (key) => p(lS.getItem(key) || "{}"),
-  add: (key, obj) => lS.setItem(key, JSON.stringify(dA(p(lS.getItem(key)), obj))),
-  clear: (key) => lS.removeItem(key),
+// src/deepAssign.js
+var deepAssign = (orig, ...args) => {
+  let i = 0, l = args.length, next;
+  if (l > 0)
+    for (; i < l; i++)
+      for (let key in next = args[i])
+        orig[key] = toString.call(next[key]) == "O" ? deepAssign(orig[key] || {}, next[key]) : next[key];
+  return orig;
+};
+
+// src/index.js
+var undef;
+var lS = localStorage;
+var get = "getItem";
+var parse = JSON.parse;
+var $$ = {
+  find: (key) => key in lS && parse(lS[get](key)),
+  add: (key, obj) => lS.setItem(key, JSON.stringify(key in lS ? deepAssign(parse(lS[get](key)), obj) : obj)),
+  delete: (key) => key == undef ? lS.clear() : lS.removeItem(key),
   has: (key) => key in lS,
-  all: (_) => Array.from(lS, (n2, i2) => p(lS.getItem(lS.key(i2))))
-}, prox = (f) => new Proxy(f, {
-  apply: (target, { $ }, [key, obj = {}]) => target($ == u ? key : $ + key, obj)
-}), s = ($) => Object.keys($$).reduce((funcObj, key) => (funcObj[key] = prox($$[key]), funcObj), { $ });
+  all: (_) => Array.from(lS, (n, i) => parse(lS[get](lS.key(i))))
+};
+var s = ($) => Object.keys($$).reduce((funcObj, funcKey) => (funcObj[funcKey] = new Proxy($$[funcKey], {
+  apply: (target, _, [key, obj = {}]) => (key = $ == undef || key == undef ? key : $ + key, target(key, obj))
+}), funcObj), {});
 export {
   s as default
 };
