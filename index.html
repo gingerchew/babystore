@@ -6,22 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Micro Store Test</title>
     <link rel="shortcut icon" href="https://fav.farm/💄" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            color: #121314;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            background: whitesmoke
+        }
+
+        main > ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 25vw);
+            grid-auto-rows: 25vw;
+            gap: 2rem;
+        }
+        li {
+            display: grid;
+            place-content: center;
+            background: #dd2244;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        li > p {
+            padding: 2rem;
+        }
+        .valid {
+            background: yellowgreen;
+        }
+    </style>
 </head>
 <body>
+    <main>
+        <ul>
+            <li id="deleteRemovesAllItems">
+                <p>Store.delete removes all items</p>
+            </li>
+            <li id="findReturnsFalseIfNotFound">
+                <p>Store.find returns false if not found</p>
+            </li>
+            <li id="addAddsObjectProperly">
+                <p>Store.add adds object Properly</p>
+            </li>
+            <li id="allReturnsProperLength">
+                <p>Store.all length matches the length of localStorage.length</p>
+            </li>
+            <li id="hasFindsProperties">
+                <p>Store.has finds properties</p>
+            </li>
+        </ul>
+    </main>
     <script type="module">
         import Store from './dist/index.js';
+
+        localStorage.clear();
+        const prefix = '$prefix:';
+
+        /** Start Store Tests */
+        let s = Store(prefix);
+        localStorage.setItem('key', 'testing');
+        const lengthBefore = localStorage.length;
+        s.delete();
+        const lengthAfter = localStorage.length;
         
-        let s = Store('$prefix:');
-        console.log(s);
+        deleteRemovesAllItems.classList.toggle('valid', lengthBefore !== lengthAfter);
+        
         const result = s.add('John', {
             name: 'John Johnerson',
             firstName: 'John',
             lastName: 'Johnerson'
         });
         
-        let r = s.find('Jane');
-        
-        console.log(r);
+        const hasJohn = s.has('John');
+
+        hasFindsProperties.classList.toggle('valid', hasJohn);
+
+        let janeShouldBeFalse = s.find('Jane');
+
+        findReturnsFalseIfNotFound.classList.toggle('valid', !janeShouldBeFalse);
 
         s.add('Jane', {
             name: 'Jane Jillerson',
@@ -37,9 +104,11 @@
             }
         });
 
-        r = s.find('Jane');
+        let janeShouldBeObject = s.find('Jane');
 
-        console.log(r);
+        let janeType = toString.call(janeShouldBeObject)[8] === 'O';
+
+        addAddsObjectProperly.classList.toggle('valid', janeType);
 
         s.add('Jane', {
             ppi: {
@@ -50,9 +119,17 @@
             }
         });
 
-        console.log(s.all());
+        allReturnsProperLength.classList.toggle('valid', s.all().length === localStorage.length)
+        
 
-        console.log(s.find('Jane'));
+        try {
+            const JanePPIDetails = JSON.parse(localStorage.getItem(prefix+'Jane')).ppi.details;
+            if ('a' in JanePPIDetails && 'b' in JanePPIDetails) {
+                hasFindsProperties.classList.toggle('valid', true);
+            }
+        } catch(err) {
+            hasFindsProperties.classList.toggle('valid', false);
+        }
     </script>
 </body>
 </html>
