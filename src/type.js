@@ -1,1 +1,0 @@
-export const isObject=o=>toString.call(o)[8]=='O';
