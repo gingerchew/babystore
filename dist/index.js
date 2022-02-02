@@ -4,7 +4,7 @@ var deepAssign = (orig, ...args) => {
   if (l > 0)
     for (; i < l; i++)
       for (let key in next = args[i])
-        orig[key] = toString.call(next[key]) == "O" ? deepAssign(orig[key] || {}, next[key]) : next[key];
+        orig[key] = toString.call(next[key])[8] == "O" ? deepAssign(orig[key] || {}, next[key]) : next[key];
   return orig;
 };
 
