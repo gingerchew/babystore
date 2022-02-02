@@ -3,30 +3,44 @@
   "version": "0.0.1",
   "description": "Smallest async LocalStorage wrapper",
   "main": "index.min.js",
+  "type":"module",
   "license": "MIT",
   "scripts": {
     "size": "size-limit",
     "build:index": "node ./scripts/build.js",
     "build": "yarn build:index",
-    "serve":"serve"
+    "test": "npx ava",
+    "serve": "serve"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.5",
     "@size-limit/time": "^7.0.5",
+    "ava": "^4.0.1",
     "esbuild": "^0.14.9",
     "size-limit": "^7.0.5"
   },
+  "ava": {
+    "files": [
+      "test/**/*.test.js"
+    ],
+    "ignoredByWatcher": [
+      "dist/*",
+      "./*.json",
+      "./*.lock"
+    ],
+    "color": true
+  },
   "size-limit": [
     {
-      "name":"deepAssign",
-      "path":"src/deepAssign.js",
-      "import":"{ deepAssign }",
-      "limit":"150 B"
+      "name": "deepAssign",
+      "path": "src/deepAssign.js",
+      "import": "{ deepAssign }",
+      "limit": "150 B"
     },
     {
-      "name":"babystore",
-      "path":"src/index.js",
-      "limit":"400 B"
+      "name": "babystore",
+      "path": "src/index.js",
+      "limit": "400 B"
     }
   ]
 }
