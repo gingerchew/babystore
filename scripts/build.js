@@ -1,4 +1,4 @@
-const esbuild = require('esbuild');
+import esbuild from 'esbuild';
 
 const config = {
     entryPoints: ['src/index.js'],
