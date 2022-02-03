@@ -1,5 +1,8 @@
+// @ts-check
+/// <reference path="./node_modules/esbuild/lib/main.d.ts">
 import esbuild from 'esbuild';
 
+/** @type {esbuild.BuildOptions} */
 const config = {
     entryPoints: ['src/index.js'],
     outfile: 'dist/index.js',
