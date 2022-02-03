@@ -11,18 +11,17 @@ var deepAssign = (orig, ...args) => {
 // src/index.js
 var undef;
 var lS = localStorage;
-var get = "getItem";
-var parse = JSON.parse;
+var qd = (result, key) => result == null ? result : toString.call(result)[8] == "O" && key in result ? result[key] : result;
 var $$ = {
-  find: (key) => key in lS && parse(lS[get](key)),
-  add: (key, obj) => lS.setItem(key, JSON.stringify(key in lS ? deepAssign(parse(lS[get](key)), obj) : obj)),
+  find: (key, ...keys) => key in lS && keys.reduce(qd, JSON.parse(lS.getItem(key))),
+  add: (key, obj) => lS.setItem(key, JSON.stringify(key in lS ? deepAssign(JSON.parse(lS.getItem(key)), obj) : obj)),
   delete: (key) => key == undef ? lS.clear() : lS.removeItem(key),
   has: (key) => key in lS,
-  all: (_) => Array.from(lS, (n, i) => parse(lS[get](lS.key(i))))
+  all: (_) => Array.from(lS, (_n, i) => JSON.parse(lS.getItem(lS.key(i))))
 };
-var s = ($) => Object.keys($$).reduce((funcObj, funcKey) => (funcObj[funcKey] = new Proxy($$[funcKey], {
-  apply: (target, _, [key, obj = {}]) => (key = $ == undef || key == undef ? key : $ + key, target(key, obj))
-}), funcObj), {});
+var s = ($) => new Proxy($$, {
+  apply: (_target, _, [key, obj = {}]) => (key = $ == undef || key == undef ? key : $ + key, $$[_](key, obj))
+});
 export {
   s as default
 };
