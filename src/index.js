@@ -1,66 +1,43 @@
 // @ts-check
 import { deepAssign } from './deepAssign.js';
 
-/**
- * @typedef {{[key: string]: unknown}|unknown} ReduceableObject
- */
-
-/**
- * @typedef babystoreFuncs
- * @property {(key: string, ...keys: string[]) => any} find
- * @property {(key: string, obj: { [key: string]: unknown }) => void} add
- * @property {(key: string) => void} delete
- * @property {(key: string) => boolean} has
- * @property {(_?: unknown) => any[]} all
- */
-
-/**
- * @typedef {{ [key in keyof babystoreFuncs]: babystoreFuncs[key] }} babystore
- */
-
-
 let /** @type {undefined} */ undef,
     lS=localStorage,
-    qd =/**
-         * @param {ReduceableObject} result
-         * @param {string} key
-         * @param {number} index
-         * @param {string[]} arr
-         * @returns {ReduceableObject}
-         */ (result, key) => result == null 
-                ? result 
-                : (
-                    toString.call(result)[8]=='O' && 
-                    // @ts-ignore
-                    key in result
-                ) 
-                ? result[key] 
-                : result,
-    /**
-     * @type babystoreFuncs
-     */
+    J=JSON,
+    /** @type {import("../types").qd} */
+    qd = (result, key) => result == null
+        ? result
+        : (
+            toString.call(result)[8]=='O' &&
+            // @ts-ignore
+            key in result
+        )
+            ? result[key]
+            : result,
+    /** @type {import("../types").babystoreFuncs} */
     $$ = {
-        find: (key, ...keys) => key in lS && keys.reduce(qd, JSON.parse(lS.getItem(key))),
+        find: (key, ...keys) => key in lS && keys.reduce(qd, J.parse(lS.getItem(key))),
         add: (key, obj) => lS.setItem(
             key, 
-            JSON.stringify(
+            J.stringify(
                 key in lS ? 
                 deepAssign(
-                    JSON.parse(lS.getItem(key)),
+                    J.parse(lS.getItem(key)),
                     obj
                 ) : obj
             )
         ),
-        delete: key => key==undef?lS.clear():lS.removeItem(key),
+        delete: key => lS.removeItem(key),
+        clear: () => lS.clear(),
         has: key => key in lS,
-        all: _ => Array.from(lS, (_n, i) => JSON.parse(lS.getItem(lS.key(i)))),
+        all: () => Array.from(lS, (_n, i) => J.parse(lS.getItem(lS.key(i)))),
     },
     s = /**
          * @param {string} [$]
-         * @returns {babystore}
+         * @returns {import("../types").babystore}
          */ 
        $ => new Proxy($$, {
-           apply: (_target, _, [key, obj={}]) => (key = $==undef||key==undef?key:$+key, $$[_](
+           apply: (_target, fn, [key, obj={}]) => (key = $==undef||key==undef?key:$+key, $$[fn](
                key,
                obj
            ))
