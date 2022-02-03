@@ -45,11 +45,14 @@
 <body>
     <main>
         <ul>
-            <li id="deleteRemovesAllItems">
-                <p>Store.delete removes all items</p>
+            <li id="clearRemovesAllItems">
+                <p>Store.clear removes all items</p>
             </li>
             <li id="findReturnsFalseIfNotFound">
                 <p>Store.find returns false if not found</p>
+            </li>
+            <li id="deleteRemovesOneProperty">
+                <p>Store.delete removes one property</p>
             </li>
             <li id="addAddsObjectProperly">
                 <p>Store.add adds object Properly</p>
@@ -72,10 +75,11 @@
         let s = babystore(prefix);
         localStorage.setItem('key', 'testing');
         const lengthBefore = localStorage.length;
-        s.delete();
+
+        s.clear();
         const lengthAfter = localStorage.length;
         
-        deleteRemovesAllItems.classList.toggle('valid', lengthBefore !== lengthAfter);
+        clearRemovesAllItems.classList.toggle('valid', lengthBefore !== lengthAfter);
         
         const result = s.add('John', {
             name: 'John Johnerson',
@@ -125,6 +129,10 @@
         const hasJaneProperties = s.has('Jane', 'ppi', 'details', 'b');
 
         console.log(hasJaneProperties);
+
+        s.delete('Jane');
+
+        deleteRemovesOneProperty.classList.toggle('valid', !s.has('Jane'));
 
         /*
         try {
