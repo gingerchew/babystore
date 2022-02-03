@@ -31,6 +31,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
+            transition: background 0.25s ease;
         }
 
         li > p {
@@ -62,13 +63,13 @@
         </ul>
     </main>
     <script type="module">
-        import Store from './dist/index.js';
+        import babystore from './dist/index.min.js';
 
         localStorage.clear();
         const prefix = '$prefix:';
 
         /** Start Store Tests */
-        let s = Store(prefix);
+        let s = babystore(prefix);
         localStorage.setItem('key', 'testing');
         const lengthBefore = localStorage.length;
         s.delete();
@@ -121,15 +122,20 @@
 
         allReturnsProperLength.classList.toggle('valid', s.all().length === localStorage.length)
         
+        const hasJaneProperties = s.has('Jane', 'ppi', 'details', 'b');
 
+        console.log(hasJaneProperties);
+
+        /*
         try {
             const JanePPIDetails = JSON.parse(localStorage.getItem(prefix+'Jane')).ppi.details;
-            if ('a' in JanePPIDetails && 'b' in JanePPIDetails) {
+            if (hasJane && 'b' in JanePPIDetails) {
                 hasFindsProperties.classList.toggle('valid', true);
             }
         } catch(err) {
             hasFindsProperties.classList.toggle('valid', false);
         }
+        */
     </script>
 </body>
 </html>
