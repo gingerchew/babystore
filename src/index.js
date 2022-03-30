@@ -4,6 +4,17 @@ import { deepAssign } from './deepAssign.js';
 let /** @type {undefined} */ undef,
     lS=localStorage,
     J=JSON,
+    /** @type {(v: unknown|string) => unknown} */
+    p=(v)=>{
+        try {
+            // @ts-ignore
+            v=J.parse(v);
+        }catch(e){
+            v=v;
+        }finally{
+            return v;
+        }
+    },
     /** @type {import("../types").qd} */
     qd = (result, key) => result == null
         ? result
@@ -16,21 +27,18 @@ let /** @type {undefined} */ undef,
             : result,
     /** @type {import("../types").babystoreFuncs} */
     $$ = {
-        find: (key, ...keys) => key in lS && keys.reduce(qd, J.parse(lS.getItem(key))),
-        add: (key, obj) => lS.setItem(
-            key, 
-            J.stringify(
-                key in lS ? 
-                deepAssign(
-                    J.parse(lS.getItem(key)),
-                    obj
-                ) : obj
-            )
+        find: (key, ...keys) => key in lS && keys.reduce(qd, J.parse(lS[key])),
+        add: (key, obj) => lS[key] = J.stringify(
+            key in lS ? 
+            deepAssign(
+                p(lS[key]),
+                obj
+            ) : obj
         ),
         delete: key => lS.removeItem(key),
         clear: () => lS.clear(),
         has: key => key in lS,
-        all: () => Array.from(lS, (_n, i) => J.parse(lS.getItem(lS.key(i)))),
+        all: () => Array.from(lS, (_n, i) => p(lS.getItem(lS.key(i)))),
     },
     s = /**
          * @param {string} [$]
