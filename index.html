@@ -66,13 +66,13 @@
         </ul>
     </main>
     <script type="module">
-        import babystore from './dist/index.min.js';
+        import { store, storeAsync } from './dist/index.min.js';
 
         localStorage.clear();
         const prefix = '$prefix:';
 
         /** Start Store Tests */
-        let s = babystore(prefix);
+        let s = store(prefix);
         localStorage.setItem('key', 'testing');
         const lengthBefore = localStorage.length;
 
@@ -134,6 +134,17 @@
 
         deleteRemovesOneProperty.classList.toggle('valid', !s.has('Jane'));
 
+        const addItemAsync = async () => {
+            await new Promise(res => setTimeout(res, 1000))
+            const a = await storeAsync('Clare', {
+                name: 'Clare',
+                fullName: 'Clare Clarity',
+                phone: '555-555-5555'
+            });
+            console.log(a.find('Clare'));
+        }
+
+        addItemAsync();
         /*
         try {
             const JanePPIDetails = JSON.parse(localStorage.getItem(prefix+'Jane')).ppi.details;
