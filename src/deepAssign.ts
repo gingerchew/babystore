@@ -1,7 +1,7 @@
-// @ts-check
+import { DeepAssign } from '../types';
 
 /** @type {import("../types").DeepAssign} */
-const deepAssign = (orig,...args) => {
+const deepAssign:DeepAssign = (orig,...args) => {
 
 	// Make sure there are objects to merge
 	if (args.length > 0)
