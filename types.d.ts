@@ -30,6 +30,8 @@ type babystore = {
 };
 
 export {
+    _UnknownObject,
+    ReduceableObject,
     qd,
     DeepAssign,
     babystoreFuncs,
