@@ -7,8 +7,7 @@
   "license": "MIT",
   "scripts": {
     "size": "size-limit",
-    "build:index": "node ./scripts/build.js",
-    "build": "yarn build:index",
+    "build": "node ./scripts/build.js",
     "test": "vitest",
     "serve": "serve"
   },
