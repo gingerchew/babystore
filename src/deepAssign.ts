@@ -4,7 +4,8 @@ import { DeepAssign } from '../types';
 const deepAssign:DeepAssign = (orig,...args) => {
 
 	// Make sure there are objects to merge
-	if (args.length > 0)
+	if (args.length)
+        // @TODO: Could this be made smaller with a for of loop
         // Merge all objects into first
         for(let i=0,next,key;i<args.length;i++) 
             // If it's an object, recursively merge
