@@ -1,5 +1,5 @@
 // @ts-check
-import { deepAssign } from './deepAssign.js';
+import { deepAssign } from './deepAssign';
 import { _UnknownObject, babystore, ReduceableObject } from '../types';
 
 let lS=localStorage,
@@ -15,7 +15,7 @@ let lS=localStorage,
     qd = (result:ReduceableObject, key:string) => result == null
         ? result
         : (
-            toString.call(result)[8]=='O' &&
+            toString.call(result)[8]=='O',
             // @ts-ignore
             key in result
         )
@@ -34,7 +34,7 @@ let lS=localStorage,
                 ) : obj
             )
         },
-        delete(key:string) { lS.removeItem(key) },
+        delete(key:string) { delete lS[key] },
         clear() { lS.clear() },
         has: (key:string) => key in lS,
         // @ts-ignore
