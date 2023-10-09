@@ -15,7 +15,7 @@ let lS=localStorage,
     qd = (result:ReduceableObject, key:string) => result == null
         ? result
         : (
-            toString.call(result)[8]=='O',
+            toString.call(result)[8]=='O' &&
             // @ts-ignore
             key in result
         )
