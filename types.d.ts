@@ -25,9 +25,22 @@ type babystoreFuncs = {
     all: () => any[];
 };
 
+type babystoreAsyncFuncs ={
+    find: (key: string, ...keys: string[]) => Promise<any>;
+    add: (key: string, obj: _UnknownObject) => Promise<void>;
+    delete: (key: string) => Promise<void>;
+    clear: () => Promise<void>;
+    has: (key: string) => Promise<boolean>;
+    all: () => Promise<any[]>;
+}
+
 type babystore = {
     [key in keyof babystoreFuncs]: babystoreFuncs[key];
 };
+
+type babystoreAsync = {
+    [key in keyof babystoreAsyncFuncs]: babystoreAsyncFuncs[key];
+}
 
 export {
     _UnknownObject,
@@ -36,5 +49,7 @@ export {
     qd,
     DeepAssign,
     babystoreFuncs,
-    babystore
+    babystore,
+    babystoreAsyncFuncs,
+    babystoreAsync
 };

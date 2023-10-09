@@ -1,6 +1,6 @@
 // @ts-check
 import { deepAssign } from './deepAssign';
-import { _UnknownObject, babystore, ReduceableObject } from '../types';
+import { _UnknownObject, babystore, babystoreAsync, babystoreAsyncFuncs, ReduceableObject } from '../types';
 
 let lS=localStorage,
     p=(v:string|unknown):unknown=>{
