@@ -24,7 +24,7 @@ let lS=localStorage,
 
     $$ = {
         find: (key:string, ...keys:string[]) => (key in lS && keys.length) ? keys.reduce(qd, p(lS[key])) : p(lS[key]),
-        add: (key:string, obj:_UnknownObject) => {
+        add(key:string, obj:_UnknownObject) {
             lS[key] = JSON.stringify(
                 key in lS ? 
                 deepAssign(
@@ -34,8 +34,8 @@ let lS=localStorage,
                 ) : obj
             )
         },
-        delete: (key:string) => lS.removeItem(key),
-        clear: () => lS.clear(),
+        delete(key:string) { lS.removeItem(key) },
+        clear() { lS.clear() },
         has: (key:string) => key in lS,
         // @ts-ignore
         all: () => Array.from(lS, (_n, i) => p(lS[lS.key(i)] || '')),
@@ -48,5 +48,7 @@ let lS=localStorage,
     });
 
 // doing it this way brings down the esbuild package size
-export const store = s;
-export const storeAsync = a;
+export {
+    s as store,
+    a as storeAsync
+}

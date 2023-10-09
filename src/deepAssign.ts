@@ -1,7 +1,7 @@
 import { DeepAssign } from '../types';
 
 /** @type {import("../types").DeepAssign} */
-const deepAssign:DeepAssign = (orig,...args) => {
+export const deepAssign:DeepAssign = (orig,...args) => {
 
 	// Make sure there are objects to merge
 	if (args.length)
@@ -16,8 +16,4 @@ const deepAssign:DeepAssign = (orig,...args) => {
                     : next[key];
 
 	return orig;
-}
-
-export {
-    deepAssign
 }
