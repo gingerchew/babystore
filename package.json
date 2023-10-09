@@ -1,6 +1,6 @@
 {
   "name": "babystore",
-  "version": "0.0.4",
+  "version": "0.1",
   "description": "Smallest async LocalStorage wrapper",
   "main": "src/index.ts",
   "type": "module",

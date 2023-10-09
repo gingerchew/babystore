@@ -1,6 +1,6 @@
 # Babystore
 
-A tiny (435b gz) wrapper around localStorage with a familiar set of methods and an async alternative.
+A tiny (392b gz) wrapper around localStorage with a familiar set of methods and an async alternative.
 
 ```js
 import { store, storeAsync } from 'babystore';
