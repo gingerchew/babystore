@@ -19,11 +19,6 @@ test('prefix: ', async () => {
     bs.add('generic', { key: 1 });
     bsp.add('generic', { key: 2 });
     
-    console.log(localStorage.getItem('generic'), localStorage.getItem('prefix:generic'));
-    // @ts-ignore
-    // console.log(Array.from(localStorage, (_, i) => ({ [localStorage.key(i)]: localStorage.getItem(localStorage.key(i))})));
-    // expect(localStorage.getItem('prefix:generic')).toStrictEqual(JSON.stringify({ key: 2 }));
-    
     expect(bsp.find('generic')).toStrictEqual({ key: 2 });
     expect(bs.find('generic')).toStrictEqual({ key: 1 });
 })
