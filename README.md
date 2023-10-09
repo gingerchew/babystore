@@ -1,6 +1,6 @@
 # Babystore
 
-A tiny (103b gz) wrapper around localStorage with a familiar set of methods and an async alternative.
+A tiny (435b gz) wrapper around localStorage with a familiar set of methods and an async alternative.
 
 ```js
 import { store, storeAsync } from 'babystore';
@@ -44,3 +44,7 @@ s.find('prefixed:secondItemName') // { b: 2 }
 await a.add('asyncItem', { aa: 1 });
 await ap.add('asyncItem', { bb: 2 });
 ```
+
+### TODO
+- [ ] look into remove blocking version
+- [ ] keep trimming
