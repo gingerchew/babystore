@@ -27,7 +27,7 @@ describe('store: ', () => {
         localStorage.setItem('test', '1');
         expect(store().find('test')).toBe(1);
         store().delete('test');
-        expect(store().find('test')).toBe(undefined);
+        expect(store().find('test')).toBe(null);
     });
 
     test('clear: ', () => {
@@ -41,7 +41,7 @@ describe('store: ', () => {
 
         store().clear();
 
-        expect(store().find('test5')).toBe(undefined); 
+        expect(store().find('test5')).toBe(null); 
     });
 
     test('has: ', () => {
@@ -81,7 +81,7 @@ describe('async: ', () => {
         a.add('test', { a: 1 });
         
         expect(await a.find('test')).toStrictEqual({ a: 1 });
-        expect(await a.find('not')).toBe(undefined);
+        expect(await a.find('not')).toBe(null);
     });
 
     test('prefix: ', async () => {
@@ -102,7 +102,7 @@ describe('async: ', () => {
         localStorage.setItem('test', '1');
         expect(await a.find('test')).toBe(1);
         store().delete('test');
-        expect(await a.find('test')).toBe(undefined);
+        expect(await a.find('test')).toBe(null);
     });
 
     test('clear: ', async () => {
@@ -110,7 +110,7 @@ describe('async: ', () => {
         a.add('test', { a: 1 });
         expect(await a.find('test')).toStrictEqual({ a: 1 });
         a.clear();
-        expect(await a.find('test')).toBe(undefined);
+        expect(await a.find('test')).toBe(null);
 
     })
 

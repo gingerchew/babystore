@@ -17,7 +17,7 @@ type qd = (result: ReduceableObject, key: string, index: number, arr: string[]) 
 type DeepAssign = (orig: PotentialObject, ...args: PotentialObject[]) => PotentialObject | _UnknownObject;
 
 type babystoreFuncs = {
-    find: (key: string, ...keys: string[]) => any;
+    find: (key: string) => any;
     add: (key: string, obj: _UnknownObject) => void;
     delete: (key: string) => void;
     clear: () => void;
@@ -26,7 +26,7 @@ type babystoreFuncs = {
 };
 
 type babystoreAsyncFuncs ={
-    find: (key: string, ...keys: string[]) => Promise<any>;
+    find: (key: string) => Promise<any>;
     add: (key: string, obj: _UnknownObject) => Promise<void>;
     delete: (key: string) => Promise<void>;
     clear: () => Promise<void>;

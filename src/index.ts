@@ -1,6 +1,6 @@
 // @ts-check
 import { deepAssign } from './deepAssign';
-import { _UnknownObject, babystore, babystoreAsync, babystoreAsyncFuncs, ReduceableObject } from '../types';
+import { _UnknownObject, babystore, ReduceableObject } from '../types';
 
 let lS=localStorage,
     p=(v:string|unknown):unknown=>{
@@ -11,19 +11,8 @@ let lS=localStorage,
             return v;
         }
     },
-    q = Promise.resolve(),
-    qd = (result:ReduceableObject, key:string) => result == null
-        ? result
-        : (
-            toString.call(result)[8]=='O' &&
-            // @ts-ignore
-            key in result
-        )
-            ? result[key]
-            : result,
-
     $$ = {
-        find: (key:string, ...keys:string[]) => (key in lS && keys.length) ? keys.reduce(qd, p(lS[key])) : p(lS[key]),
+        find: (key:string) => key in lS ? p(lS[key]) : null,
         add(key:string, obj:_UnknownObject) {
             lS[key] = JSON.stringify(
                 key in lS ? 
@@ -44,7 +33,7 @@ let lS=localStorage,
         get: (_, fn:string) => (key?:string, obj?: object) => _[fn]($+key, obj)
     }), 
     a = ($='') => new Proxy<babystore>($$, {
-        get: (_, fn:string) => (key:string, obj = {}) => q.then(() => _[fn]($+key, obj)),
+        get: (_, fn:string) => (key:string, obj = {}) => Promise.resolve().then(() => _[fn]($+key, obj)),
     });
 
 // doing it this way brings down the esbuild package size
