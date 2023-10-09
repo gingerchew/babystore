@@ -67,3 +67,13 @@ test('all: ', () => {
     
     expect(s.all().length).toBe(5);
 })
+
+test('add to same key: ', () => {
+    const s = store();
+    s.clear();
+
+    s.add('item', { a: 1 });
+    s.add('item', { b: 2 });
+
+    expect(s.find('item')).toStrictEqual({ a: 1, b: 2 });
+})
