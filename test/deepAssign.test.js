@@ -1,5 +1,5 @@
-import test from 'ava';
-import { deepAssign } from '../src/deepAssign.js';
+import { test, expect } from 'vitest';
+import { deepAssign } from '../src/deepAssign';
 
 test('deepAssign: Simple depth', t => {
     const deepLevel1 = {
@@ -26,7 +26,7 @@ test('deepAssign: Simple depth', t => {
 
     const result = deepAssign(deepLevel1, assignLevel1);
     
-    t.deepEqual(result, expectLevel1, 'Is this meant to only show up when there is an error?');
+    expect(result).toMatchObject(expectLevel1); // deepEqual(result, expectLevel1, 'Is this meant to only show up when there is an error?');
 });
 
 test('deepAssign: Complex depth', t => {
@@ -51,7 +51,7 @@ test('deepAssign: Complex depth', t => {
         }
     };
 
-    const expect = {
+    const expected = {
         a: 1,
         b: {
             c: 2,
@@ -68,7 +68,7 @@ test('deepAssign: Complex depth', t => {
 
     const result = deepAssign(original, assign);
 
-    t.deepEqual(result, expect);
+    expect(result).toMatchObject(expected);
 });
 
 

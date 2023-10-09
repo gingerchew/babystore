@@ -1,69 +1,69 @@
+// @vitest-environment jsdom
 // @ts-check
-/// <reference types="ava">
-/// <reference types="@types/puppeteer">
-/// <reference path="../src/index.js">
-import test from 'ava';
-import puppeteer from 'puppeteer';
-import babystore from '../src/index.js';
+import { expect, test } from 'vitest';
+// import puppeteer from 'puppeteer';
+import { store, storeAsync } from '../src/index';
 
-/**
- * @param {any} t 
- * @param {any} run 
- */
-const _withPage = async (t, run) => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    
-    await page.goto('https://google.com');
+test('add: ', async () => {
+    store().add('defaultKey', { key: '1' });
 
-    try {
-        await run(t, page);
-    } finally {
-        await page.close();
-        await browser.close();
-    }
-};
-
-/**
- * @param {string} key - localStorage default key
- * @param {puppeteer.Page} page
- */
-const checkLocalStorage = async (key, page) => {
-    const hasKey = await page.evaluate((key) => {
-        let result = localStorage.getItem(key);
-
-        return result !== null;
-    }, key);
-
-    return hasKey;
-}
-
-// test.before('Set up localStorage items.', _withPage)
-
-test('checkLocalStorage: ', _withPage, 
-    /**
-     * @param {any} t
-     * @param {puppeteer.Page} page
-     */
-    async (t, page) => {
-
-    await page.evaluate(() => localStorage.setItem('defaultKey', '1'));
-
-    const result = await checkLocalStorage('defaultKey', page);
-
-    t.is(result, true);
+    expect(localStorage.defaultKey).toStrictEqual(JSON.stringify({ key: '1' }));
+    store().clear();
 });
 
-test('babystore: get works', _withPage, 
-    /**
-     * @param {any} t 
-     * @param {puppeteer.Page} page 
-     */
-    async (t, page) => {
+test('prefix: ', async () => {
     
-    const bs = babystore();
+    const bs = store();
+    const bsp = store('prefix:');
 
-    await page.evaluate(() => localStorage.setItem('findKey', '{ "test": true }'));
+    bs.add('generic', { key: 1 });
+    bsp.add('generic', { key: 2 });
+    
+    console.log(localStorage.getItem('generic'), localStorage.getItem('prefix:generic'));
+    // @ts-ignore
+    // console.log(Array.from(localStorage, (_, i) => ({ [localStorage.key(i)]: localStorage.getItem(localStorage.key(i))})));
+    // expect(localStorage.getItem('prefix:generic')).toStrictEqual(JSON.stringify({ key: 2 }));
+    
+    expect(bsp.find('generic')).toStrictEqual({ key: 2 });
+    expect(bs.find('generic')).toStrictEqual({ key: 1 });
+})
 
-    let results = await page.evaluate(() => bs.find('findKey'));
+test('delete', () => {
+    localStorage.setItem('test', '1');
+    expect(store().find('test')).toBe(1);
+    store().delete('test');
+    expect(store().find('test')).toBe(undefined);
+});
+
+test('clear: ', () => {
+    store().add('test1', { a: '1' });
+    store().add('test2', { a: '1' });
+    store().add('test3', { a: '1' });
+    store().add('test4', { a: '1' });
+    store().add('test5', { a: '1' });
+
+    expect(store().find('test5')).toStrictEqual({ a: '1'});
+
+    store().clear();
+
+    expect(store().find('test5')).toBe(undefined); 
+});
+
+test('has: ', () => {
+    store().add('test', {});
+
+    expect(store().has('test')).toBe(true);
+    expect(store().has('x')).toBe(false);
+});
+
+test('all: ', () => {
+    const s = store();
+    s.clear();
+    s.add('test1', { a: '1' });
+    s.add('test2', { a: '1' });
+    s.add('test3', { a: '1' });
+    s.add('test4', { a: '1' });
+    s.add('test5', { a: '1' });
+    
+    expect(s.all().length).toBe(5);
 })
