@@ -2,7 +2,7 @@
   "name": "babystore",
   "version": "0.0.2",
   "description": "Smallest async LocalStorage wrapper",
-  "main": "index.min.js",
+  "main": "src/index.ts",
   "type": "module",
   "license": "MIT",
   "scripts": {
