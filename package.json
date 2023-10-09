@@ -13,9 +13,7 @@
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.5",
-    "@size-limit/time": "^7.0.5",
-    "ava": "^4.0.1",
-    "esbuild": "^0.14.9",
+    "esbuild": "^0.19.4",
     "jsdom": "^22.1.0",
     "puppeteer": "^21.3.6",
     "size-limit": "^7.0.5",
