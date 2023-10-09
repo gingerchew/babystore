@@ -1,5 +1,5 @@
 {
-  "name": "@gingerchew/babystore",
+  "name": "babystore",
   "version": "0.0.1",
   "description": "Smallest async LocalStorage wrapper",
   "main": "index.min.js",
