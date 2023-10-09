@@ -31,6 +31,7 @@ type babystore = {
 
 export {
     _UnknownObject,
+    PotentialObject,
     ReduceableObject,
     qd,
     DeepAssign,
