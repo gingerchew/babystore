@@ -25,7 +25,7 @@
       "name": "deepAssign",
       "path": "src/deepAssign.ts",
       "import": "{ deepAssign }",
-      "limit": "150 B"
+      "limit": "100 B"
     },
     {
       "name": "babystore",
