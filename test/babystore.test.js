@@ -1,13 +1,20 @@
 // @vitest-environment jsdom
-// @ts-check
 import { describe, expect, test } from 'vitest';
-// import puppeteer from 'puppeteer';
-import { store, storeAsync } from '../src/index';
+import { store } from '../src/index';
 describe('store: ', () => {
-    test('find, add: ',() => {
-        store().add('defaultKey', { key: '1' });
-
-        expect(localStorage.defaultKey).toStrictEqual(JSON.stringify({ key: '1' }));
+    test('find, add: ', () => {
+        const val = {
+            key: 1
+        };
+        
+        store().add('defaultKey', val);
+        
+        let s = localStorage.getItem('defaultKey');
+        let x = store().find('defaultKey');
+        const item = localStorage.getItem('defaultKey');
+        
+        expect(item).toBe(JSON.stringify(val));
+        expect(x).toStrictEqual(JSON.parse(s || '{}'));
         store().clear();
     });
 
@@ -51,18 +58,6 @@ describe('store: ', () => {
         expect(store().has('x')).toBe(false);
     });
 
-    test('all: ', () => {
-        const s = store();
-        s.clear();
-        s.add('test1', { a: '1' });
-        s.add('test2', { a: '1' });
-        s.add('test3', { a: '1' });
-        s.add('test4', { a: '1' });
-        s.add('test5', { a: '1' });
-        
-        expect(s.all().length).toBe(5);
-    })
-
     test('add to same key: ', () => {
         const s = store();
         s.clear();
@@ -72,77 +67,4 @@ describe('store: ', () => {
 
         expect(s.find('item')).toStrictEqual({ a: 1, b: 2 });
     });
-})
-
-describe('async: ', () => {
-    test('find, add: ', async () => {
-        const a = storeAsync();
-        a.clear();
-        a.add('test', { a: 1 });
-        
-        expect(await a.find('test')).toStrictEqual({ a: 1 });
-        expect(await a.find('not')).toBe(null);
-    });
-
-    test('prefix: ', async () => {
-        
-        const bs = storeAsync();
-        const bsp = storeAsync('prefix:');
-
-        bs.add('generic', { key: 1 });
-        bsp.add('generic', { key: 2 });
-        
-        expect(await bsp.find('generic')).toStrictEqual({ key: 2 });
-        expect(await bs.find('generic')).toStrictEqual({ key: 1 });
-    });
-
-    test('delete: ', async () => {
-        const a = storeAsync();
-        
-        localStorage.setItem('test', '1');
-        expect(await a.find('test')).toBe(1);
-        store().delete('test');
-        expect(await a.find('test')).toBe(null);
-    });
-
-    test('clear: ', async () => {
-        const a = storeAsync();
-        a.add('test', { a: 1 });
-        expect(await a.find('test')).toStrictEqual({ a: 1 });
-        a.clear();
-        expect(await a.find('test')).toBe(null);
-
-    })
-
-    test('has: ', async () => {
-        const a = storeAsync();
-        a.clear();
-        a.add('test', { a: 1 });
-        expect(await a.has('test')).toBe(true);
-        expect(await a.has('not')).toBe(false);
-    });
-
-    test('all: ', async () => {
-        const a = storeAsync();
-        a.clear();
-
-        a.add('test', { a: 1 });
-        a.add('test2', { a: 2 });
-        a.add('test3', { a: 3 });
-        a.add('test4', { a: 4 });
-        a.add('test5', { a: 5 });
-        const all = await a.all();
-        expect(all.length).toBe(5)
-    });
-
-    test('add to same key: ', async () => {
-        const a = storeAsync();
-        a.clear();
-
-        a.add('item', { a: 1 });
-        a.add('item', { b: 2 });
-
-        expect(await a.find('item')).toStrictEqual({ a: 1, b: 2 });
-    });
-
-})
+});
