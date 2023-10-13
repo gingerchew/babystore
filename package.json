@@ -5,6 +5,10 @@
   "main": "src/index.ts",
   "type": "module",
   "license": "MIT",
+  "keywords": ["localStorage","sessionStorage","tiny"],
+  "repository": {
+    "url": "https://github.com/gingerchew/babystore.git"
+  }, 
   "scripts": {
     "size": "size-limit",
     "build": "node ./scripts/build.js",
