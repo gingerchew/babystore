@@ -40,6 +40,13 @@ s.find('prefixed:secondItemName') // { b: 2 }
 - [ ] keep trimming
 - [ ] use `Promise.resolve().then` to take some methods off the main thread
 ## Changelog
+- 0.4.0 (breaking) 
+    - babystore is now async by default
+    - the get handler now returns `async (key, obj) =>` which
+      makes then `AsyncFunction`'s
+- 0.3.1
+    - updates some of the content
+    - removes references to async in tests and source code
 - 0.3.0 (breaking)
     - babystore no longer offers an async version
     the implementation meant that *every* method was async, even when there were ones that didn't need to be. May revisit later
