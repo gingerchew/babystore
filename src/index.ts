@@ -1,8 +1,8 @@
-import { DeepAssign, PotentialObject, _UnknownObject, babystore } from '../types';
+import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs } from '../types';
 
 let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         // Make sure there are objects to merge
-        if (args.length)
+        if (args[0])
             // Merge all objects into first
             for (let next of args)
                 // If it's an object, recursively merge
@@ -23,7 +23,7 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
             return v;
         }
     },
-    $$ = {
+    $$:babystoreFuncs = {
         find: (key: string) => p(lS[key]) ?? null,
         add(key: string, obj: _UnknownObject) {
             lS[key] = JSON.stringify(
@@ -34,14 +34,14 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
             )
         },
         // @ts-ignore
-        clear: () => lS.clear(),
+        clear() { lS.clear() },
         delete(key: string) { delete lS[key] },
         has: (key: string) => key in lS,
         // @ts-ignore
         // need a way to do this that respects prefixing
         // all: () => Array.from(lS, (_n, i) => p(lS[lS.key(i)] || '')),
     },
-    s = ($ = '') => new Proxy<babystore>($$, {
+    s = ($ = '') => new Proxy<babystoreFuncs>($$, {
         get: (_, fnName: string) => async (key?: string, obj?: object) => _[fnName]($ + key, obj)
     });
 

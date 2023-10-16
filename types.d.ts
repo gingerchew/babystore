@@ -32,5 +32,6 @@ export {
     PotentialObject,
     ReduceableObject,
     DeepAssign,
-    babystore
+    babystore,
+    babystoreFuncs
 };
