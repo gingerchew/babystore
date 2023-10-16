@@ -1,7 +1,7 @@
 import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs } from '../types';
 
 let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
-        // Make sure there are objects to merge
+        // Make sure there an object to merge
         if (args[0])
             // Merge all objects into first
             for (let next of args)
@@ -15,7 +15,7 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         return orig;
     },
     lS = localStorage,
-    p = (v: string | unknown): unknown => {
+    p = (v: string): unknown => {
         try {
             // @ts-ignore
             v = JSON.parse(v);
@@ -30,10 +30,9 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
                 obj = key in lS 
                 // @ts-ignore
                 ? deepAssign(p(lS[key]), obj) 
-                : obj,
+                : obj
             )
         },
-        // @ts-ignore
         clear() { lS.clear() },
         delete(key: string) { delete lS[key] },
         has: (key: string) => key in lS,
