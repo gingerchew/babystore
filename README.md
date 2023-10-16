@@ -42,6 +42,11 @@ s.find('prefixed:secondItemName') // { b: 2 }
     - A potential solution is available at https://github.com/gingerchew/babystore/tree/async-promise-then
 
 ## Changelog
+
+- 0.4.0 (breaking) 
+    - babystore is now async by default
+    - the get handler now returns `async (key, obj) =>` which
+      makes then `AsyncFunction`'s
 - 0.3.1
     - updates some of the content
     - removes references to async in tests and source code

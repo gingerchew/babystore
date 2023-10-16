@@ -24,7 +24,7 @@ type babystoreFuncs = {
 };
 
 type babystore = {
-    [key in keyof babystoreFuncs]: babystoreFuncs[key];
+    [key in keyof babystoreFuncs]: Promise<babystoreFuncs[key]>;
 };
 
 export {
@@ -32,5 +32,6 @@ export {
     PotentialObject,
     ReduceableObject,
     DeepAssign,
-    babystore
+    babystore,
+    babystoreFuncs
 };
