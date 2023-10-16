@@ -39,7 +39,12 @@ s.find('prefixed:secondItemName') // { b: 2 }
 - [ ] all() that respects prefixing
 - [ ] keep trimming
 - [ ] use `Promise.resolve().then` to take some methods off the main thread
+    - A potential solution is available at https://github.com/gingerchew/babystore/tree/async-promise-then
+
 ## Changelog
+- 0.3.1
+    - updates some of the content
+    - removes references to async in tests and source code
 - 0.3.0 (breaking)
     - babystore no longer offers an async version
     the implementation meant that *every* method was async, even when there were ones that didn't need to be. May revisit later
