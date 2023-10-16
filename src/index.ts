@@ -1,5 +1,3 @@
-// @ts-check
-// import { deepAssign } from './deepAssign';
 import { DeepAssign, PotentialObject, _UnknownObject, babystore } from '../types';
 
 let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {

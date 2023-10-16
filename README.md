@@ -1,9 +1,9 @@
 # Babystore
 
-A tiny (248b gz) wrapper around localStorage with a familiar set of methods and an async alternative.
+A tiny (248b gz) wrapper around localStorage with a familiar set of methods.
 
 ```js
-import { store, storeAsync } from 'babystore';
+import { store } from 'babystore';
 
 const s = store();
 const p = store('prefixed:');
@@ -12,7 +12,7 @@ const p = store('prefixed:');
 s.add('itemName', { a: 1 });
 
 // then parses them on the way out
-await s.find('itemName') // { a: 1 }
+s.find('itemName') // { a: 1 }
 
 p.add('secondItemName', { b: 2 });
 
@@ -22,23 +22,23 @@ s.has('doesntExist') // false
 
 // you can use .delete to remove single items
 p.delete('secondItemName');
-await p.find('secondItemName') // undefined
+p.find('secondItemName') // undefined
 
 // or use .clear to wipe the entire storage
 s.clear();
-await s.find('itemName') // undefined
+s.find('itemName') // undefined
 
 
 // prefixed stores are not accessible unless you use the
 // prefixed store or manually include the prefix
-await s.find('secondItemName') // undefined
-await s.find('prefixed:secondItemName') // { b: 2 }
+s.find('secondItemName') // undefined
+s.find('prefixed:secondItemName') // { b: 2 }
 ```
 
 ### TODO
 - [ ] all() that respects prefixing
 - [ ] keep trimming
-
+- [ ] use `Promise.resolve().then` to take some methods off the main thread
 ## Changelog
 - 0.3.0 (breaking)
     - babystore no longer offers an async version
