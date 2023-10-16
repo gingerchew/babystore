@@ -33,8 +33,8 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
                 : obj
             )
         },
-        clear() { lS.clear() },
         delete(key: string) { delete lS[key] },
+        clear() { lS.clear() },
         has: (key: string) => key in lS,
         // @ts-ignore
         // need a way to do this that respects prefixing
