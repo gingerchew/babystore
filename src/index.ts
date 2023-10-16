@@ -13,7 +13,7 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
                         : next[key];
 
         return orig;
-    }, 
+    },
     lS = localStorage,
     p = (v: string | unknown): unknown => {
         try {
@@ -24,7 +24,6 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         }
     },
     $$ = {
-        delete(key: string) { delete lS[key] },
         find: (key: string) => p(lS[key]) ?? null,
         add(key: string, obj: _UnknownObject) {
             lS[key] = JSON.stringify(
@@ -36,13 +35,14 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         },
         // @ts-ignore
         clear: () => lS.clear(),
+        delete(key: string) { delete lS[key] },
         has: (key: string) => key in lS,
         // @ts-ignore
         // need a way to do this that respects prefixing
         // all: () => Array.from(lS, (_n, i) => p(lS[lS.key(i)] || '')),
     },
     s = ($ = '') => new Proxy<babystore>($$, {
-        get: (_, fnName: string) => (key?: string, obj?: object) => _[fnName]($ + key, obj)
+        get: (_, fnName: string) => async (key?: string, obj?: object) => _[fnName]($ + key, obj)
     });
 
 // doing it this way brings down the esbuild package size
