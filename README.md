@@ -1,6 +1,6 @@
 # Babystore
 
-A tiny (248b gz) wrapper around localStorage with a familiar set of methods.
+A tiny (341b gz) wrapper around localStorage with a familiar set of methods.
 
 ```js
 import { store } from 'babystore';
@@ -20,29 +20,36 @@ p.add('secondItemName', { b: 2 });
 s.has('itemName') // true
 s.has('doesntExist') // false
 
+// prefixed stores are not accessible unless you use the
+// prefixed store or include the prefix
+s.find('secondItemName') // undefined
+s.find('prefixed:secondItemName') // { b: 2 }
+
+// use store.all to get all values in the storage
+store.all() // [ { a: 1 }, { b: 2 } ]
+
 // you can use .delete to remove single items
 p.delete('secondItemName');
 p.find('secondItemName') // undefined
 
-// or use .clear to wipe the entire storage
-s.clear();
+// or use store.nuke to wipe the entire storage
+store.nuke();
 s.find('itemName') // undefined
 
-
-// prefixed stores are not accessible unless you use the
-// prefixed store or manually include the prefix
-s.find('secondItemName') // undefined
-s.find('prefixed:secondItemName') // { b: 2 }
 ```
 
 ### TODO
-- [ ] all() that respects prefixing
 - [ ] keep trimming
-- [ ] use `Promise.resolve().then` to take some methods off the main thread
-    - A potential solution is available at https://github.com/gingerchew/babystore/tree/async-promise-then
 
 ## Changelog
-
+- 0.5.0 (breaking)
+    - the clear and all methods have been removed from babystore instances
+    - nuke and all are the above methods on the store function
+    ```js
+    import { store } from 'store';
+    store.all() // returns all items in localStorage
+    store.nuke() // removes all items in localStorage
+    ```
 - 0.4.0 (breaking) 
     - babystore is now async by default
     - the get handler now returns `async (key, obj) =>` which

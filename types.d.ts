@@ -18,20 +18,27 @@ type babystoreFuncs = {
     find: (key: string) => any;
     add: (key: string, obj: _UnknownObject) => void;
     delete: (key: string) => void;
-    clear: () => void;
+    // clear: () => void;
     has: (key: string) => boolean;
-    all?: () => any[];
+    // all?: () => any[];
 };
 
 type babystore = {
     [key in keyof babystoreFuncs]: Promise<babystoreFuncs[key]>;
 };
 
+type store = {
+    (): void;
+    all: (key?:string) => unknown[];
+    nuke: () => void;
+}
+
 export {
     _UnknownObject,
     PotentialObject,
     ReduceableObject,
     DeepAssign,
+    store,
     babystore,
     babystoreFuncs
 };

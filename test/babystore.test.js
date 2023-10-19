@@ -1,6 +1,9 @@
 // @vitest-environment jsdom
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { store } from '../src/index';
+
+beforeEach(() => store.nuke());
+
 describe('store: ', () => {
     test('find, add: ', async () => {
         const val = {
@@ -15,11 +18,9 @@ describe('store: ', () => {
         
         expect(item).toBe(JSON.stringify(val));
         expect(x).toStrictEqual(JSON.parse(s || '{}'));
-        store().clear();
     });
 
     test('prefix: ', async () => {
-        
         const bs = store();
         const bsp = store('prefix:');
 
@@ -37,7 +38,7 @@ describe('store: ', () => {
         expect(await store().find('test')).toBe(null);
     });
 
-    test('clear: ', async () => {
+    test('clear/nuke: ', async () => {
         store().add('test1', { a: '1' });
         store().add('test2', { a: '1' });
         store().add('test3', { a: '1' });
@@ -45,8 +46,8 @@ describe('store: ', () => {
         store().add('test5', { a: '1' });
 
         expect(await store().find('test5')).toStrictEqual({ a: '1'});
-
-        store().clear();
+        
+        store.nuke();
 
         expect(await store().find('test5')).toBe(null); 
     });
@@ -60,11 +61,36 @@ describe('store: ', () => {
 
     test('add to same key: ', async () => {
         const s = store();
-        s.clear();
 
         s.add('item', { a: 1 });
         s.add('item', { b: 2 });
 
         expect(await s.find('item')).toStrictEqual({ a: 1, b: 2 });
+    });
+
+    test('all: ', async () => {
+        const s = store();
+        
+        s.add('item1', { a: 1 });
+        s.add('item2', { a: 2 });
+        s.add('item3', { a: 3 });
+        s.add('item4', { a: 4 });
+        s.add('item5', { a: 5 });
+
+        expect(store.all()).toStrictEqual([{a:1},{a:2},{a:3},{a:4},{a:5}]);
+    });
+
+    test('all prefix: ', async () => {
+        const s = store();
+        const p = store('prefix:');
+
+        s.add('item1', { a: 1 });
+        p.add('item2', { b: 2 });
+        
+        const sAll = store.all();
+        const pAll = store.all('prefix:');
+
+        expect(sAll.length).toBe(2);
+        expect(pAll.length).toBe(1);
     });
 });
