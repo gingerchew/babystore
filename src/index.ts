@@ -26,7 +26,7 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         find: (key: string) => p(localStorage[key]) ?? null,
         add(key: string, obj: _UnknownObject) {
             localStorage[key] = JSON.stringify(
-                obj = key in localStorage 
+                key in localStorage 
                 // @ts-ignore
                 ? deepAssign(p(localStorage[key]), obj) 
                 : obj
