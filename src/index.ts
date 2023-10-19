@@ -1,6 +1,6 @@
 import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs, store } from '../types';
 
-let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
+let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         // Make sure there an object to merge
         if (args[0])
             // Merge all objects into first
