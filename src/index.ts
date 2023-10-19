@@ -1,6 +1,6 @@
 import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs, store } from '../types';
 
-let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
+let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         // Make sure there an object to merge
         if (args[0])
             // Merge all objects into first
@@ -14,7 +14,6 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
 
         return orig;
     },
-    lS = localStorage,
     p = (v: string): unknown => {
         try {
             // @ts-ignore
@@ -24,29 +23,38 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         }
     },
     $$:babystoreFuncs = {
-        find: (key: string) => p(lS[key]) ?? null,
+        // if the localStorage item doesn't exist, 
+        // it returns defined, we return null
+        // to more closely match the Storage.getItem method
+        find: (key: string) => p(localStorage[key]) ?? null,
         add(key: string, obj: _UnknownObject) {
-            lS[key] = JSON.stringify(
-                obj = key in lS 
+            localStorage[key] = JSON.stringify(
+                // Assuming that since the key is in
+                // localStorage, then it is a parseable object
+                key in localStorage 
                 // @ts-ignore
-                ? deepAssign(p(lS[key]), obj) 
+                ? deepAssign(p(localStorage[key]), obj) 
                 : obj
             )
         },
-        delete(key: string) { delete lS[key] },
-        has: (key: string) => key in lS,
+        delete(key: string) { delete localStorage[key] },
+        has: (key: string) => key in localStorage,
     },
     s:store = new Proxy(Object.assign(function(){}, {
-        nuke() { lS.clear() },
-        all: (key?:string) => Object.keys(lS).reduce((d:unknown[], s:string) => (
-            (!key || s.indexOf(key) === 0) && d.push(p(lS[s])), d
+        nuke() { localStorage.clear() },
+        all: (key?:string) => Object.keys(localStorage).reduce((d:unknown[], s:string) => (
+            // if there is no key, or the key is in the ls key
+            // ~s.indexOf ~= s.indexOf !== -1
+            (!key || ~s.indexOf(key)) 
+                // spread existing items, then add new item
+                ? [...d, p(localStorage[s])] 
+                // return the previous items 
+                : d
         ), [] as unknown[])
     }), {
-        apply(_self, _this, [$ = '']) {
-            return new Proxy<babystoreFuncs>($$, {
-                get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj)
-            });
-        }
+        apply: (_self, _this, [$ = '']) => new Proxy<babystoreFuncs>($$, {
+            get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj)
+        }),
     });
 // doing it this way brings down the esbuild package size
 export {
