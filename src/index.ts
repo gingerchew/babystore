@@ -1,4 +1,4 @@
-import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs } from '../types';
+import { DeepAssign, PotentialObject, _UnknownObject, babystoreFuncs, store } from '../types';
 
 let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
         // Make sure there an object to merge
@@ -34,18 +34,21 @@ let deepAssign: DeepAssign = (orig = {}, ...args: PotentialObject[]) => {
             )
         },
         delete(key: string) { delete lS[key] },
-        clear() { lS.clear() },
         has: (key: string) => key in lS,
-        // @ts-ignore
-        // need a way to do this that respects prefixing
-        // all: () => Array.from(lS, (_n, i) => p(lS[lS.key(i)] || '')),
     },
-    s = ($ = '') => new Proxy<babystoreFuncs>($$, {
-        get: (_, fnName: string) => async (key?: string, obj?: object) => _[fnName]($ + key, obj)
+    s:store = new Proxy(Object.assign(function(){}, {
+        nuke() { lS.clear() },
+        all: (key?:string) => Object.keys(lS).reduce((d:unknown[], s:string) => (
+            (!key || s.indexOf(key) === 0) && d.push(p(lS[s])), d
+        ), [] as unknown[])
+    }), {
+        apply(_self, _this, [$ = '']) {
+            return new Proxy<babystoreFuncs>($$, {
+                get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj)
+            });
+        }
     });
-
 // doing it this way brings down the esbuild package size
 export {
-    s as store,
-    // a as storeAsync
+    s as store
 }
