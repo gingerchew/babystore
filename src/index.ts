@@ -23,9 +23,14 @@ let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         }
     },
     $$:babystoreFuncs = {
+        // if the localStorage item doesn't exist, 
+        // it returns defined, we return null
+        // to more closely match the Storage.getItem method
         find: (key: string) => p(localStorage[key]) ?? null,
         add(key: string, obj: _UnknownObject) {
             localStorage[key] = JSON.stringify(
+                // Assuming that since the key is in
+                // localStorage, then it is a parseable object
                 key in localStorage 
                 // @ts-ignore
                 ? deepAssign(p(localStorage[key]), obj) 
@@ -39,7 +44,7 @@ let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         nuke() { localStorage.clear() },
         all: (key?:string) => Object.keys(localStorage).reduce((d:unknown[], s:string) => (
             // if there is no key, or the key is in the ls key
-            // ~s.indexOf ~= s.indexOf !== 0
+            // ~s.indexOf ~= s.indexOf !== -1
             (!key || ~s.indexOf(key)) 
                 // spread existing items, then add new item
                 ? [...d, p(localStorage[s])] 
