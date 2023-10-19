@@ -28,7 +28,7 @@ type babystore = {
 };
 
 type store = {
-    (key?:string): babystoreFuncs;
+    (): void;
     all: (key?:string) => unknown[];
     nuke: () => void;
 }
