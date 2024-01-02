@@ -1,6 +1,6 @@
 # Babystore
 
-A tiny (341b gz) wrapper around localStorage with a familiar set of methods.
+A tiny (330b gz) wrapper around localStorage with a familiar set of methods.
 
 ```js
 import { store } from 'babystore';
