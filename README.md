@@ -42,6 +42,8 @@ s.find('itemName') // undefined
 - [ ] keep trimming
 
 ## Changelog
+- 0.5.1
+    - Reduces package size by 11b gz
 - 0.5.0 (breaking)
     - the clear and all methods have been removed from babystore instances
     - nuke and all are the above methods on the store function
