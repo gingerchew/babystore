@@ -1,14 +1,18 @@
 {
   "name": "babystore",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Smallest LocalStorage wrapper",
   "main": "src/index.ts",
   "type": "module",
   "license": "MIT",
-  "keywords": ["localStorage","sessionStorage","tiny"],
+  "keywords": [
+    "localStorage",
+    "sessionStorage",
+    "tiny"
+  ],
   "repository": {
     "url": "https://github.com/gingerchew/babystore.git"
-  }, 
+  },
   "scripts": {
     "size": "size-limit",
     "build": "node ./scripts/build.js",
