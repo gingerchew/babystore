@@ -35,7 +35,6 @@ p.find('secondItemName') // undefined
 // or use store.nuke to wipe the entire storage
 store.nuke();
 s.find('itemName') // undefined
-
 ```
 
 ### TODO
