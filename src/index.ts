@@ -40,6 +40,15 @@ let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         },
         delete: (key: string) => delete ls[key],
         has: (key: string) => key in ls,
+        /** What value is this actually adding? */
+        entries(_key, _obj, prefix) {
+            return Array.from(ls, (_, i) => {
+                _ = ls.key(i);
+                if (~_.indexOf(prefix)) return;
+
+                return ([ls.key(i), ls.getItem(ls.key(i) ?? '')])
+            })
+        }
     },
     s:store = new Proxy(Object.assign(function(){}, {
         nuke() { ls.clear() },
@@ -54,7 +63,7 @@ let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         ), [] as unknown[])
     }), {
         apply: (_target, _this, [$ = '']) => new Proxy<babystoreFuncs>($$, {
-            get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj)
+            get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj, $)
         }),
     });
 

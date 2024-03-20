@@ -46,10 +46,10 @@
     <main>
         <ul>
             <li id="clearRemovesAllItems">
-                <p>Store.clear removes all items</p>
+                <p>Store.nuke removes all items</p>
             </li>
             <li id="findReturnsFalseIfNotFound">
-                <p>Store.find returns false if not found</p>
+                <p>Store().find returns null if not found</p>
             </li>
             <li id="deleteRemovesOneProperty">
                 <p>Store.delete removes one property</p>
@@ -66,7 +66,7 @@
         </ul>
     </main>
     <script type="module">
-        import { store, storeAsync } from './dist/index.min.js';
+        import { store } from './dist/index.min.js';
 
         localStorage.clear();
         const prefix = '$prefix:';
@@ -76,7 +76,7 @@
         localStorage.setItem('key', 'testing');
         const lengthBefore = localStorage.length;
 
-        s.clear();
+        store.nuke();
         const lengthAfter = localStorage.length;
         
         clearRemovesAllItems.classList.toggle('valid', lengthBefore !== lengthAfter);
@@ -86,16 +86,16 @@
             firstName: 'John',
             lastName: 'Johnerson'
         });
+        const hasJohn = await s.has('John');
         
-        const hasJohn = s.has('John');
-
+        console.log({ hasJohn });
         hasFindsProperties.classList.toggle('valid', hasJohn);
 
-        let janeShouldBeFalse = s.find('Jane');
+        let janeShouldBeFalse = await s.find('Jane');
 
         findReturnsFalseIfNotFound.classList.toggle('valid', !janeShouldBeFalse);
 
-        s.add('Jane', {
+        await s.add('Jane', {
             name: 'Jane Jillerson',
             firstName: 'Jane',
             lastName: 'Jillerson',
@@ -109,13 +109,13 @@
             }
         });
 
-        let janeShouldBeObject = s.find('Jane');
+        let janeShouldBeObject = await s.find('Jane');
 
         let janeType = toString.call(janeShouldBeObject)[8] === 'O';
 
         addAddsObjectProperly.classList.toggle('valid', janeType);
 
-        s.add('Jane', {
+        await s.add('Jane', {
             ppi: {
                 email: 'email2@example.com',
                 details: {
@@ -124,37 +124,29 @@
             }
         });
 
-        allReturnsProperLength.classList.toggle('valid', s.all().length === localStorage.length)
+        allReturnsProperLength.classList.toggle('valid', store.all().length === localStorage.length)
         
-        const hasJaneProperties = s.has('Jane', 'ppi', 'details', 'b');
+        const hasJaneProperties = await s.has('Jane');
 
-        console.log(hasJaneProperties);
+        // console.log(hasJaneProperties);
 
-        s.delete('Jane');
+        await s.delete('Jane');
 
-        deleteRemovesOneProperty.classList.toggle('valid', !s.has('Jane'));
+        deleteRemovesOneProperty.classList.toggle('valid', !(await s.has('Jane')));
+        
+        store.nuke();
 
         const addItemAsync = async () => {
             await new Promise(res => setTimeout(res, 1000))
-            const a = await storeAsync('Clare', {
+            const a = await s.add('Clare', {
                 name: 'Clare',
                 fullName: 'Clare Clarity',
                 phone: '555-555-5555'
             });
-            console.log(a.find('Clare'));
+            console.log(await s.find('Clare'));
         }
 
         addItemAsync();
-        /*
-        try {
-            const JanePPIDetails = JSON.parse(localStorage.getItem(prefix+'Jane')).ppi.details;
-            if (hasJane && 'b' in JanePPIDetails) {
-                hasFindsProperties.classList.toggle('valid', true);
-            }
-        } catch(err) {
-            hasFindsProperties.classList.toggle('valid', false);
-        }
-        */
     </script>
 </body>
 </html>
