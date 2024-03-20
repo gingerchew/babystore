@@ -19,6 +19,20 @@ describe('store: ', () => {
         expect(item).toBe(JSON.stringify(val));
         expect(x).toStrictEqual(JSON.parse(s || '{}'));
     });
+    test('store handlers', () => {
+        const val = {
+            key: 1
+        };
+
+        store().add('defaultKey', val);
+
+        expect('nonExistant' in store).toBe(false);
+        expect('defaultKey' in store).toBe(true);
+
+        const keys = Object.keys(store);
+
+        expect(keys.length).toBe(1);
+    })
 
     test('prefix: ', async () => {
         const bs = store();
