@@ -56,10 +56,6 @@ let deepAssign: DeepAssign = (orig, ...args: PotentialObject[]) => {
         apply: (_target, _this, [$ = '']) => new Proxy<babystoreFuncs>($$, {
             get: (_, fnName: string) => async (key: string = '', obj?: object) => _[fnName]($ + key, obj)
         }),
-        ownKeys: (_target) => {
-            
-            return Object.keys(ls);
-        },
         has: (_target, key) => key in ls,
     });
 

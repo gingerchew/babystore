@@ -30,7 +30,7 @@ describe('store: ', () => {
         expect('defaultKey' in store).toBe(true);
 
         const keys = Object.keys(store);
-
+        
         expect(keys.length).toBe(1);
     })
 
